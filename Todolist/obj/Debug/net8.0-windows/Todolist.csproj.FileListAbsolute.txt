@@ -1,0 +1,17 @@
+C:\прога\todo\todo\Todolist\bin\Debug\net8.0-windows\Todolist.exe
+C:\прога\todo\todo\Todolist\bin\Debug\net8.0-windows\Todolist.deps.json
+C:\прога\todo\todo\Todolist\bin\Debug\net8.0-windows\Todolist.runtimeconfig.json
+C:\прога\todo\todo\Todolist\bin\Debug\net8.0-windows\Todolist.dll
+C:\прога\todo\todo\Todolist\bin\Debug\net8.0-windows\Todolist.pdb
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.Form1.resources
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.csproj.GenerateResource.cache
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.GeneratedMSBuildEditorConfig.editorconfig
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.AssemblyInfoInputs.cache
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.AssemblyInfo.cs
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.csproj.CoreCompileInputs.cache
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.sourcelink.json
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.dll
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\refint\Todolist.dll
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.pdb
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\Todolist.genruntimeconfig.cache
+C:\прога\todo\todo\Todolist\obj\Debug\net8.0-windows\ref\Todolist.dll
