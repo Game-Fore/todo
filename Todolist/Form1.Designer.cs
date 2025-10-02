@@ -1,4 +1,6 @@
-﻿namespace Todolist
+﻿using System.Windows.Forms;
+
+namespace Todolist
 {
     partial class Form1
     {
@@ -30,14 +32,13 @@
         {
             button1 = new Button();
             button2 = new Button();
-            listBox1 = new ListBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
+            textBox1 = new TextBox();
+            checkedListBox1 = new CheckedListBox();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(727, 27);
+            button1.Location = new Point(820, 405);
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 1;
@@ -47,7 +48,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(727, 62);
+            button2.Location = new Point(820, 459);
             button2.Name = "button2";
             button2.Size = new Size(94, 29);
             button2.TabIndex = 2;
@@ -55,37 +56,28 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
-            // listBox1
+            // textBox1
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(12, 20);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(709, 264);
-            listBox1.TabIndex = 3;
-            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
+            textBox1.Location = new Point(12, 461);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(802, 27);
+            textBox1.TabIndex = 4;
             // 
-            // textBox2
+            // checkedListBox2
             // 
-            textBox2.Location = new Point(12, 290);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(709, 27);
-            textBox2.TabIndex = 4;
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(12, 331);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(709, 27);
-            textBox3.TabIndex = 5;
+            checkedListBox1.FormattingEnabled = true;
+            checkedListBox1.Location = new Point(12, 12);
+            checkedListBox1.Name = "checkedListBox2";
+            checkedListBox1.Size = new Size(802, 422);
+            checkedListBox1.TabIndex = 5;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(842, 474);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(listBox1);
+            ClientSize = new Size(1131, 742);
+            Controls.Add(checkedListBox1);
+            Controls.Add(textBox1);
             Controls.Add(button2);
             Controls.Add(button1);
             Name = "Form1";
@@ -94,11 +86,65 @@
             PerformLayout();
         }
 
+
+        private void InitializeDescriptionPanel()
+        {
+            // панель для описания
+            Panel panelDescription = new Panel();
+            panelDescription.Dock = DockStyle.Right;
+            panelDescription.Width = 315;
+            panelDescription.BorderStyle = BorderStyle.FixedSingle;
+            this.Controls.Add(panelDescription);
+
+            // Label для описания
+            Label labelDesc = new Label();
+            labelDesc.Text = "Описание задачи:";
+            labelDesc.Location = new Point(10, 10);
+            labelDesc.AutoSize = true;
+            panelDescription.Controls.Add(labelDesc);
+
+            // TextBox для описания
+            textBoxDescription = new TextBox();
+            textBoxDescription.Multiline = true;
+            textBoxDescription.ScrollBars = ScrollBars.Vertical;
+            textBoxDescription.Location = new Point(10, 35);
+            textBoxDescription.Size = new Size(290, 365);
+            textBoxDescription.Enabled = false;
+            panelDescription.Controls.Add(textBoxDescription);
+
+            // Кнопка сохранения
+            buttonSaveDescription = new Button();
+            buttonSaveDescription.Text = "Сохранить описание";
+            buttonSaveDescription.Location = new Point(10, 195);
+            buttonSaveDescription.Size = new Size(220, 25);
+            buttonSaveDescription.Enabled = false;
+            buttonSaveDescription.Click += ButtonSaveDescription_Click;
+            panelDescription.Controls.Add(buttonSaveDescription);
+
+            // Label для дедлайна
+            labelDeadline = new Label();
+            labelDeadline.Text = "Дедлайн: не установлен";
+            labelDeadline.Location = new Point(10, 230);
+            labelDeadline.AutoSize = true;
+            labelDeadline.ForeColor = Color.Gray;
+            panelDescription.Controls.Add(labelDeadline);
+
+            // Кнопка установки дедлайна
+            buttonSetDeadline = new Button();
+            buttonSetDeadline.Text = "Установить дедлайн";
+            buttonSetDeadline.Location = new Point(10, 255);
+            buttonSetDeadline.Size = new Size(380, 25);
+            buttonSetDeadline.Enabled = false;
+            buttonSetDeadline.Click += ButtonSetDeadline_Click;
+            panelDescription.Controls.Add(buttonSetDeadline);
+        }
+        
+
         #endregion
         private Button button1;
         private Button button2;
-        private ListBox listBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private TextBox textBox1;
+        private CheckedListBox checkedListBox1;
+        
     }
 }
