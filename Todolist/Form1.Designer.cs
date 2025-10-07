@@ -87,6 +87,12 @@ namespace Todolist
         }
 
 
+
+
+
+
+
+
         private void InitializeDescriptionPanel()
         {
             // панель для описания
