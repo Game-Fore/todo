@@ -25,13 +25,10 @@ namespace Todolist
             bdManager.InitializeDatabase();
             LoadTasksFromDatabase();
 
-            tasks.Add(new TaskItem("Пример задачи 1", "Это описание первой задачи"));
-            tasks.Add(new TaskItem("Пример задачи 2", ""));
-
             UpdateTasksList();
-            checkedListBox1.KeyDown += checkedListBox1_KeyDown;
-            textBox1.KeyPress += textBox1_KeyPress;
-            checkedListBox1.MouseDown += checkedListBox1_MouseDown;
+            checkedListBox1.KeyDown +=KeyDown;
+            textBox1.KeyPress += KeyPress;
+            checkedListBox1.MouseDown += MouseDown;
             checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged;
             checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             textBoxDescription.TextChanged += textBoxDescription_TextChanged;
@@ -39,7 +36,7 @@ namespace Todolist
 
         private void LoadTasksFromDatabase()
         {
-            tasks = bdManager.GetAllTasks();
+            tasks = bdManager.GetTasks();
             UpdateTasksList();
         }
 
@@ -48,13 +45,13 @@ namespace Todolist
         {
             if (checkedListBox1.SelectedIndex != -1)
             {
-                // Загружаем описание выбранной задачи
+                // загружаем описание задачи
                 TaskItem selectedTask = tasks[checkedListBox1.SelectedIndex];
                 textBoxDescription.Text = selectedTask.Description;
                 textBoxDescription.Enabled = true;
                 buttonSaveDescription.Enabled = true;
 
-                // Обновляем отображение дедлайна (если добавили)
+                // обновляем отображение дедлайна
                 if (labelDeadline != null)
                 {
                     if (selectedTask.Deadline.HasValue)
@@ -64,6 +61,7 @@ namespace Todolist
                         {
                             labelDeadline.ForeColor = Color.Red;
                             labelDeadline.Text += " ⛔️ ПРОСРОЧЕНО";
+
                         }
                         else
                         {
@@ -168,7 +166,7 @@ namespace Todolist
             }
         }
 
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
@@ -177,7 +175,7 @@ namespace Todolist
             }
         }
 
-        private void checkedListBox1_KeyDown(object sender, KeyEventArgs e)
+        private void KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -199,7 +197,7 @@ namespace Todolist
             }
         }
 
-        private void checkedListBox1_MouseDown(object sender, MouseEventArgs e)
+        private void MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Clicks == 2 && e.Button == MouseButtons.Left)
             {
@@ -248,10 +246,6 @@ namespace Todolist
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         //установка дедлайна
         private void SetDeadline(int taskIndex)
@@ -278,27 +272,15 @@ namespace Todolist
             {
                 tasks[checkedListBox1.SelectedIndex].Description = textBoxDescription.Text;
                 bdManager.UpdateTask(tasks[checkedListBox1.SelectedIndex]);  // Сохраняем в БД
-                MessageBox.Show("Описание сохранено!", "Успех",
+                MessageBox.Show("сохранилось", "победа",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     
-        //для проверки просроченных
-        private void CheckOverdueTasks()
-        {
-            foreach (var task in tasks)
-            {
-                if (task.IsOverdue)
-                {
-
-                }
-            }
-        }
-
         //удаление просроченных
         private void DeleteCompletedTasks()
         {
-            var result = MessageBox.Show("Удалить все выполненные задачи?", "Подтверждение",
+            var result = MessageBox.Show("Уверен, что удаляем?", "Подтверди",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -391,19 +373,19 @@ namespace Todolist
             this.checkBoxSetDeadline.Text = "Установить дедлайн";
             this.checkBoxSetDeadline.CheckedChanged += new System.EventHandler(this.checkBoxSetDeadline_CheckedChanged);
 
-            // buttonOK
+            // button ok
             this.buttonOK.Location = new System.Drawing.Point(20, 80);
             this.buttonOK.Size = new System.Drawing.Size(90, 25);
             this.buttonOK.Text = "OK";
             this.buttonOK.DialogResult = DialogResult.OK;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
 
-            // buttonCancel
+            // button cancel
             this.buttonCancel.Location = new System.Drawing.Point(120, 80);
             this.buttonCancel.Size = new System.Drawing.Size(90, 25);
             this.buttonCancel.Text = "Отмена";
             this.buttonCancel.DialogResult = DialogResult.Cancel;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.buttonCancel.Click += new System.EventHandler(this.Cancel_Click);
 
             // DeadlineForm
             this.ClientSize = new System.Drawing.Size(240, 120);
@@ -437,7 +419,7 @@ namespace Todolist
             }
         }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
+        private void Cancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -470,7 +452,7 @@ namespace Todolist
             }
 
             // Получить все задачи
-            public List<TaskItem> GetAllTasks()
+            public List<TaskItem> GetTasks()
             {
                 var tasks = new List<TaskItem>();
 
@@ -492,14 +474,23 @@ namespace Todolist
                                 IsCompleted = reader.GetBoolean("IsCompleted")
                             };
 
-                            //обрабатываем дедлайн
-                            if (!reader.IsDBNull("Deadline") &&
-                                DateTime.TryParse(reader.GetString("Deadline"), out DateTime deadline))
+                        //обрабатываем дедлайн
+                        if (!reader.IsDBNull("Deadline"))
+                        {
+                            string deadlineString = reader.GetString("Deadline");
+                            if (DateTime.TryParse(deadlineString, out DateTime deadline))
                             {
                                 task.Deadline = deadline;
+                                Console.WriteLine($"Loaded deadline: {deadline} for task: {task.Title}");
                             }
+                        }
+                        else
+                        {
+                            task.Deadline = null;
+                            Console.WriteLine($"No deadline for task: {task.Title}");
+                        }
 
-                            tasks.Add(task);
+                        tasks.Add(task);
                         }
                     }
                 }
@@ -550,8 +541,14 @@ namespace Todolist
                     command.Parameters.AddWithValue("$title", task.Title);
                     command.Parameters.AddWithValue("$description", task.Description ?? "");
                     command.Parameters.AddWithValue("$isCompleted", task.IsCompleted);
-                    command.Parameters.AddWithValue("$deadline", task.Deadline?.ToString("yyyy-MM-dd HH:mm:ss") ?? DBNull.Value.ToString());
-
+                    if (task.Deadline.HasValue)
+                    {
+                        command.Parameters.AddWithValue("$deadline", task.Deadline?.ToString("yyyy-MM-dd HH:mm:ss") );
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("$deadline", DBNull.Value);
+                    }
                     command.ExecuteNonQuery();
                 }
             }
